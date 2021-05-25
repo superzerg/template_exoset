@@ -13,10 +13,6 @@ jobs:
       uses: actions/checkout@v2
     - name: Build LaTeX
       run: |
-        for project in $(ls); do
-          if [ -d "$project" ]; then
-            cd ${project}
-            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=$PWD/../ $PWD/Blanc_FR_S01_E01
-            cd ..
-          fi
+        latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=$PWD/../ $PWD/Blanc_FR_S01_E01
+        cd ..
         done
