@@ -16,7 +16,7 @@ jobs:
         for project in $(ls); do
           if [ -d "$project" ]; then
             cd ${project}
-            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=${project} ${project}
+            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=template_exoset/${project} template_exoset/${project}
             cd ..
           fi
         done
