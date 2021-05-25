@@ -16,7 +16,7 @@ jobs:
         for project in $(ls); do
           if [ -d "$project" ]; then
             cd ${project}
-            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=template_exoset/${project} template_exoset/${project}
+            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=template_exoset/${project} template_exoset/Blanc_FR_S01_E01/Compile_Blanc_FR_S01_E1_ENONCE_SOLUTION.tex
             cd ..
           fi
         done
