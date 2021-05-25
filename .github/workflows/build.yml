@@ -15,6 +15,8 @@ jobs:
         extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
+        echo $PWD
+        ls
         latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. template_exoset/Blanc_FR_S01_E01/Blanc_FR_S01_E01
         cd ..
         done
