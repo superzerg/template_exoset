@@ -17,6 +17,10 @@ jobs:
       run: |
         echo $PWD
         ls
-        cd $PWD/Blanc_FR_S01_E01
-        latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. Blanc_FR_S01_E01
-        cd ..
+        for file in $(ls); do
+          if [ ! -d "$file" ]; then continue; fi;
+          if [ "$file" == "cartouche" ]; then continue; fi;
+          cd $PWD/$file
+          latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $file;
+          cd ..
+        done
