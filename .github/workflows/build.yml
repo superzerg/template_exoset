@@ -20,7 +20,7 @@ jobs:
         for file in $(ls); do
           if [ ! -d "$file" ]; then continue; fi;
           echo $file;
-          if [ "$file" == "cartouche" ]; then continue; fi;
+          if [[ "$file" == "cartouche" ]]; then continue; fi;
           cd $PWD/$file
           enonce="Compile_${file}_ENONCE"
           solution="Compile_${file}_ENONCE_SOLUTION"
