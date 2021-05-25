@@ -16,7 +16,7 @@ jobs:
         for project in $(ls); do
           if [ -d "$project" ]; then
             cd ${project}
-            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=$PWD/../ $PWD/${project}
+            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=$PWD/../ $PWD/Blanc_FR_S01_E01
             cd ..
           fi
         done
