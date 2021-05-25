@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
         latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=$PWD/../ $PWD/Blanc_FR_S01_E01
