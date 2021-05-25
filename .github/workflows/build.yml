@@ -20,4 +20,3 @@ jobs:
         cd $PWD/Blanc_FR_S01_E01
         latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. Blanc_FR_S01_E01
         cd ..
-        done
