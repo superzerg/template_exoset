@@ -11,12 +11,16 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
-        for project in $(ls); do
-          if [ -d "$project" ]; then
-            cd ${project}
-            latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=template_exoset/${project} template_exoset/Blanc_FR_S01_E01/Compile_Blanc_FR_S01_E1_ENONCE_SOLUTION.tex
-            cd ..
-          fi
+        echo $PWD
+        ls
+        for file in $(ls); do
+          if [ ! -d "$file" ]; then continue; fi;
+          if [ "$file" == "cartouche" ]; then continue; fi;
+          cd $PWD/$file
+          latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $file;
+          cd ..
         done
