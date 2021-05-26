@@ -15,12 +15,16 @@ jobs:
         extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
-        echo $PWD
+        echo $SHELL
         ls
         for file in $(ls); do
           if [ ! -d "$file" ]; then continue; fi;
-          if [ "$file" == "cartouche" ]; then continue; fi;
+          echo $file;
+          if [ "$file" = "cartouche" ]; then continue; fi;
           cd $PWD/$file
-          latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $file;
+          enonce="Compile_${file}_ENONCE"
+          solution="Compile_${file}_ENONCE_SOLUTION"
+          latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $enonce;
+          latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $solution;
           cd ..
         done
