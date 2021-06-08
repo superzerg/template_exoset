@@ -49,6 +49,6 @@ jobs:
           echo $dir;
           if [ "$dir" = "cartouche" ]; then continue; fi;
           cd $PWD/$dir
-          if [ ! -e ${dir}.json ]; then exit -1; fi;
+          if [ ! -e ${dir}.json ]; then exit 1; fi;
           cd ..
         done      
