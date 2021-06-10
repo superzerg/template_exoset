@@ -21,7 +21,7 @@ jobs:
         extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
-        dir_to_compile=$(python get_directory_to_compile.py ${{ github.head_ref }} ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }})
+        dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.head_ref }} ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }})
         for dir in $dir_to_compile; do
           cd $PWD/$dir
           enonce="Compile_${dir}_ENONCE"
