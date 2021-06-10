@@ -29,9 +29,9 @@ jobs:
     - name: Build LaTeX
       run: |
         echo "repository"${{ github.repository }}
-        echo "pull number"${{ github.head_ref }}
+        echo "pull number"${{ github.event.number }}
         echo "token"${{ secrets.GITHUB_TOKEN }}
-        dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.repository }} 14 dftefdtej73281 )
+        dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.repository }} ${{ github.event.number }} ${{ secrets.GITHUB_TOKEN }} )
         for dir in $dir_to_compile; do
           cd $PWD/$dir
           enonce="Compile_${dir}_ENONCE"
