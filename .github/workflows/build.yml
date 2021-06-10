@@ -21,15 +21,11 @@ jobs:
         extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
-        echo $SHELL
-        ls
-        for file in $(ls); do
-          if [ ! -d "$file" ]; then continue; fi;
-          echo $file;
-          if [ "$file" = "cartouche" ]; then continue; fi;
-          cd $PWD/$file
-          enonce="Compile_${file}_ENONCE"
-          solution="Compile_${file}_ENONCE_SOLUTION"
+        dir_to_compile=$(python get_directory_to_compile.py ${{ github.head_ref }} ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }})
+        for dir in $dir_to_compile; do
+          cd $PWD/$dir
+          enonce="Compile_${dir}_ENONCE"
+          solution="Compile_${dir}_ENONCE_SOLUTION"
           latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $enonce;
           latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $solution;
           cd ..
