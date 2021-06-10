@@ -21,6 +21,8 @@ jobs:
         extra_system_packages: texlive-latex-extra
     - name: Build LaTeX
       run: |
+        python -m pip install --upgrade pip
+        pip install requests
         dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.head_ref }} ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }})
         for dir in $dir_to_compile; do
           cd $PWD/$dir
