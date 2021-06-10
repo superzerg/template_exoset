@@ -62,7 +62,7 @@ jobs:
         for index in "${!table_metadata[@]}"; do
           if ! ${table_metadata[$index]}; then missing_metadata_file+="${table_file_name[$index]}"; fi
         done
-        if ${#missing_metadata_file[@]} > 0; then 
+        if (( ${#missing_metadata_file[@]} > 0 )); then 
         curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
             "context": "tests",
             "state": "failure",
