@@ -44,11 +44,32 @@ jobs:
       run: |
         echo $SHELL
         ls
+        table_file_name=( )
+        table_metadata=( )
         for dir in $(ls); do
           if [ ! -d "$dir" ]; then continue; fi;
           echo $dir;
           if [ "$dir" = "cartouche" ]; then continue; fi;
           cd $PWD/$dir
-          if [ ! -e ${dir}.json ]; then exit 1; fi;
+          if [ ! -e ${dir}.json ]; then table_file_name+=( "$dir" ); table_metadata+=( False ); 
+          else table_file_name+=("$dir); table_metadata+=( True ); fi;
           cd ..
-        done      
+        done
+        missing_metadata_files=( )
+        for index in "${!table_metadata[@]}"; do
+          if ! $table_metadata[$index]; then missing_metadata_file+="${table_file_name[$index]}"; fi
+        done
+        if ${#missing_metadata_file[@]} > 0; then 
+        curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
+            "context": "tests",
+            "state": "failure",
+            "description": "Missing metadata files : ${missing_metadata_file[@]}",
+            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }'; else 
+          curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
+            "context": "tests",
+            "state": "success",
+            "description": "All metadata are present",
+            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }'; fi
+        
