@@ -55,7 +55,7 @@ jobs:
           if [ "$dir" = "cartouche" ]; then continue; fi;
           cd $PWD/$dir
           if [ ! -e ${dir}.json ]; then table_file_name+=( "$dir" ); table_metadata+=( False ); 
-          else table_file_name+=("$dir); table_metadata+=( True ); fi;
+          else table_file_name+=("$dir"); table_metadata+=( True ); fi;
           cd ..
         done
         declare -a missing_metadata_files
