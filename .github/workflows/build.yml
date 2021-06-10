@@ -22,9 +22,10 @@ jobs:
     - name: Install dependencies
       run: |
         python3 --version
-        python3 -m pip install --user --upgrade pip
-        pip --version
-        pip install --user requests  
+        echo "installing pip"
+        python3 -m pip install --user --upgrade pip requests  
+        which pip
+        which pip3
     - name: Build LaTeX
       run: |
         dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.head_ref }} ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }})
