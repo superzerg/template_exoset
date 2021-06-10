@@ -29,7 +29,7 @@ jobs:
     - name: Build LaTeX
       run: |
         echo "pull number"${{ github.sha }}
-        dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.repository }} 24 ${{ secrets.GITHUB_TOKEN }} )
+        dir_to_compile=( $(python .github/workflows/get_directory_to_compile.py ${{ github.repository }} 24 ${{ secrets.GITHUB_TOKEN }} ) )
         echo "dir to compile value $dir_to_compile"
         for dir in $dir_to_compile; do
           cd $PWD/$dir
