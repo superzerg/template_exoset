@@ -8,7 +8,6 @@ def get_directory_to_compile(repository, pull_request_number, access_token):
   token = 'token '+ access_token
   url = 'https://api.github.com/repos/' + repository + '/pulls/'+ str(pull_request_number) + '/files'
   x = requests.get(url, headers={'Accept': 'application/vnd.github.v3+json', 'authorization': token})
-  print(x.json())
   filename_list = [jsondict['filename'] for jsondict in x.json()]
   directory_list = set()
   rerun_all = False
@@ -33,7 +32,6 @@ def get_directory_to_compile(repository, pull_request_number, access_token):
            
       
 if __name__ == '__main__':
-  print(argv)
   repository = argv[1]
   pr = argv[2]
   token = argv[3]
