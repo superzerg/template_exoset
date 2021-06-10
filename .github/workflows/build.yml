@@ -16,12 +16,11 @@ jobs:
       image: danteev/texlive:latest
     steps:
     - name: Python
-      uses: actions/setup-python@v1
-    - name: Pip  
-      uses: BSFishy/pip-action@v2
-      with:
-        packages: |
-          requests
+      uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
     - name: Checkout
       uses: actions/checkout@v2
     - name: Build LaTeX
