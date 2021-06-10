@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - master
+defaults: 
+  run:
+    shell: bash
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -44,28 +47,28 @@ jobs:
       run: |
         echo $SHELL
         ls
-        table_file_name=( )
-        table_metadata=( )
+        declare -a table_file_name
+        declare -a table_metadata
         for dir in $(ls); do
           if [ ! -d "$dir" ]; then continue; fi;
           echo $dir;
           if [ "$dir" = "cartouche" ]; then continue; fi;
           cd $PWD/$dir
-          if [ ! -e ${dir}.json ]; then table_file_name+=( "$dir" ); table_metadata+=( False ); 
-          else table_file_name+=("$dir); table_metadata+=( True ); fi;
+          if [ ! -e ${dir}.json ]; then table_file_name+=( "$dir" ); table_metadata+=( false ); 
+          else table_file_name+=("$dir"); table_metadata+=( true ); fi;
           cd ..
         done
-        missing_metadata_files=( )
+        declare -a missing_metadata_files
         for index in "${!table_metadata[@]}"; do
-          if ! $table_metadata[$index]; then missing_metadata_file+="${table_file_name[$index]}"; fi
+          if ! ${table_metadata[$index]}; then missing_metadata_file+=( "${table_file_name[$index]}" ); fi
         done
-        if ${#missing_metadata_file[@]} > 0; then 
+        if (( ${#missing_metadata_file[@]} > 0 )); then 
         curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
             "context": "tests",
             "state": "failure",
             "description": "Missing metadata files : ${missing_metadata_file[@]}",
             "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }'; else 
+          }'; exit 1; else 
           curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
             "context": "tests",
             "state": "success",
