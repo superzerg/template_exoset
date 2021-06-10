@@ -36,5 +36,5 @@ if __name__ == '__main__':
   pr = argv[2]
   token = argv[3]
   directory_list = get_directory_to_compile(repository, pr, token)
-  print(' '.join(['"' + d + '"' for d in directory_list]))
+  print(' '.join([d for d in directory_list]))
   
