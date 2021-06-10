@@ -32,6 +32,7 @@ def get_directory_to_compile(repository, pull_request_number, access_token):
            
       
 if __name__ == '__main__':
+  print(argv)
   pr = argv[1]
   repository = argv[2]
   token = argv[3]
