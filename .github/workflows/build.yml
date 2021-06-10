@@ -16,13 +16,12 @@ jobs:
       image: danteev/texlive:latest
     steps:
     -  name: Checkout
-    -  uses: 
-        actions/checkout@v2
-        actions/setup-python@v1
-        BSFishy/pip-action@v1
-    -  with:
-        packages: |
-          requests
+    -  uses: actions/checkout@v2
+    -  uses: actions/setup-python@v1
+    -  uses: BSFishy/pip-action@v1
+       with:
+            packages: |
+              requests
     - name: Build LaTeX
       run: |
         dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.head_ref }} ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }})
