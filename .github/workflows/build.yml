@@ -28,10 +28,9 @@ jobs:
         which pip3
     - name: Build LaTeX
       run: |
-        echo "repository"${{ github.repository }}
         echo "pull number"${{ github.sha }}
-        echo "token"${{ secrets.GITHUB_TOKEN }}
         dir_to_compile=$(python .github/workflows/get_directory_to_compile.py ${{ github.repository }} 24 ${{ secrets.GITHUB_TOKEN }} )
+        echo $dir_to_compile
         for dir in $dir_to_compile; do
           cd $PWD/$dir
           enonce="Compile_${dir}_ENONCE"
