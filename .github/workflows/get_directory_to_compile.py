@@ -32,10 +32,9 @@ def get_directory_to_compile(repository, pull_request_number, access_token):
            
       
 if __name__ == '__main__':
-  print(argv)
-  pr = argv[1]
-  repository = argv[2]
+  repository = argv[1]
+  pr = argv[2]
   token = argv[3]
   directory_list = get_directory_to_compile(repository, pr, token)
-  print(' '.join(['"' + d + '"' for d in directory_list]))
+  print(' '.join([d for d in directory_list]))
   
