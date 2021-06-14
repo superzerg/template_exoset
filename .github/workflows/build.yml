@@ -73,14 +73,14 @@ jobs:
         echo "missing data" + ${missing_metadata_file[@]}
         echo "github sha"+ ${{ github.sha }}
         if (( ${#missing_metadata_file[@]} > 0 )); then 
-        curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
-            "context": "check_file_metadata",
-            "state": "failure",
-            "description": "Missing metadata files : '${missing_metadata_file[@]}'\n existing metadata files: '${existing_metadata_file[@]}' ",
-            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }'; exit 1; else 
+        curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "content-type: application/json" --data "{
+            \"context\": \"Build / check_file_metadata\",
+            \"state\": \"failure\",
+            \"description\": \"Missing metadata files \",
+            \"target_url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+          }"; exit 1; else 
           curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
-            "context": "check_file_metadata",
+            "context": "Build / check_file_metadata",
             "state": "success",
             "description": "All metadata exist: '${existing_metadata_file[@]}'",
             "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
