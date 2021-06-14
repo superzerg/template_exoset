@@ -3,9 +3,12 @@ on:
   push:
     paths-ignore:
       - '*.pdf'
-  pull_request:
-    branches:
-      - master
+  #pull_request:
+  #  branches:
+  #    - master
+defaults: 
+  run:
+    shell: bash
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -14,19 +17,24 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        extra_system_packages: texlive-latex-extra
+    - name: Python
+      uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: |
+        python3 --version
+        echo "installing pip"
+        python3 -m pip install --user --upgrade pip requests  
+        which pip
+        which pip3
     - name: Build LaTeX
       run: |
-        echo $SHELL
-        ls
-        for file in $(ls); do
-          if [ ! -d "$file" ]; then continue; fi;
-          echo $file;
-          if [ "$file" = "cartouche" ]; then continue; fi;
-          cd $PWD/$file
-          enonce="Compile_${file}_ENONCE"
-          solution="Compile_${file}_ENONCE_SOLUTION"
+        echo "pull number"${{ github.sha }}
+        dir_to_compile=( $(python .github/workflows/get_directory_to_compile.py ${{ github.repository }} 24 ${{ secrets.GITHUB_TOKEN }} ) )
+        echo "dir to compile value $dir_to_compile"
+        for dir in $dir_to_compile; do
+          cd $PWD/$dir
+          enonce="Compile_${dir}_ENONCE"
+          solution="Compile_${dir}_ENONCE_SOLUTION"
           latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $enonce;
           latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=. $solution;
           cd ..
@@ -51,25 +59,29 @@ jobs:
           echo $dir;
           if [ "$dir" = "cartouche" ]; then continue; fi;
           cd $PWD/$dir
-          if [ ! -e ${dir}.json ]; then table_file_name+=( "$dir" ); table_metadata+=( False ); 
-          else table_file_name+=("$dir); table_metadata+=( True ); fi;
+          table_file_name+=( "$dir" );
+          if [ ! -e ${dir}.json ]; then  table_metadata+=( false ); 
+          else table_metadata+=( true ); fi;
           cd ..
         done
         declare -a missing_metadata_files
+        declare -a existing_metadata_files
         for index in "${!table_metadata[@]}"; do
-          if ! $table_metadata[$index]; then missing_metadata_file+="${table_file_name[$index]}"; fi
+          if ! ${table_metadata[$index]}; then missing_metadata_file+=( "${table_file_name[$index]}" ); 
+          else existing_metadata_files+=( "${table_file_name[$index]}" )
+          fi
         done
-        if ${#missing_metadata_file[@]} > 0; then 
+        if (( ${#missing_metadata_file[@]} > 0 )); then 
         curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
-            "context": "tests",
+            "context": "check metadata files",
             "state": "failure",
-            "description": "Missing metadata files : ${missing_metadata_file[@]}",
+            "description": "Missing metadata files : '${missing_metadata_file[@]}'\n existing metadata files: '${existing_metadata_file[@]}' ",
             "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }' exit 1; else 
+          }'; exit 1; else 
           curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
-            "context": "tests",
+            "context": "check metadata files",
             "state": "success",
-            "description": "All metadata are present",
+            "description": "All metadata exist: '${existing_metadata_file[@]}'",
             "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }'; fi
         
