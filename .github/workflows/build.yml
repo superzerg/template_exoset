@@ -80,12 +80,15 @@ jobs:
         if [ -z "${commit_sha}" ]; then commit_sha=${{ github.sha }}; fi;
         file_to_charge=$(printf ",%s" "${missing_metadata_file[@]}")
         if (( ${#missing_metadata_file[@]} > 0 )); then 
-          curl_request='curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/'${commit_sha}' --header "authorization: Bearer ${{ secrets.ADMIN_TOKEN }}"  --data "{
-              \"context\": \"Build / check_file_metadata\",
-              \"state\": \"failure\",
-              \"description\": \"Missing metadata files : '$file_to_charge' existing metadata files: \",
-              \"target_url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
-            }" '; echo "$curl_request"; $curl_request; echo "curl request executed"; exit 1; 
+          curl --request POST 
+            --url https://api.github.com/repos/${{ github.repository }}/statuses/${commit_sha} 
+            --header 'authorization: Bearer ${{ secrets.ADMIN_TOKEN }}'  
+            --data '{
+              "context": "Build / check_file_metadata",
+              "state": "failure",
+              "description": "Missing metadata files : $file_to_charge existing metadata files: ",
+              "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }'; echo "curl request executed"; exit 1; 
         else 
           curl_request='curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/'${commit_sha}' --header "authorization: Bearer ${{ secrets.ADMIN_TOKEN }}"  --data "{
               \"context\": \"Build / check_file_metadata\",
