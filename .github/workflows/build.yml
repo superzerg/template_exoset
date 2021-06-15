@@ -92,5 +92,5 @@ jobs:
               \"state\": \"success\",
               \"description\": \"All metadata exist\",
               \"target_url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
-            }" '; echo "$curl_request"; $curl_request;; fi
+            }" '; echo "$curl_request"; $curl_request; fi
         
