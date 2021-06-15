@@ -1,0 +1,152 @@
+%--------------------------------------------------------------------------
+%
+%                                                    SOLUTION
+%
+%--------------------------------------------------------------------------
+
+\begin{center}
+\vspace*{5mm}
+\noindent {\Large {\bf (Solution) }}
+\end{center}
+
+A diagram synthesising all available information is given in the problem. We add to that diagram a $Oxy$ frame, where the origin $O$ is the fox's position, and the angle $\alpha$, which shows the direction of $v_0$ with respect to the $x$-axis.
+\begin{center}
+\input{figures/serie01_c_fig3.pdf_t}
+\end{center}
+\begin{enumerate}
+\item[a)] The initial conditions are\footnote{For ease of writing, $||\vec{v}_0||$ is simply written $v_0$}:\\
+\begin{itemize}
+\item for the stone: \\
+\begin{displaymath}
+\textrm{position:}
+\left\{ \begin{array}{l}
+x_0^S = 0 \\
+y_0^S = 0
+\end{array}\right.\qquad
+\textrm{velocity:}
+\left\{ \begin{array}{l}
+v_{x,0}^S = v_0\cos\alpha\\
+v_{y,0}^S = v_0\sin\alpha
+\end{array}\right.\qquad
+\end{displaymath}
+\item for the cheese: \\
+\begin{displaymath}
+\textrm{position:}
+\left\{ \begin{array}{l}
+x_0^C = L \\
+y_0^C = H
+\end{array}\right.\qquad
+\textrm{velocity:}
+\left\{ \begin{array}{l}
+v_{x,0}^C = 0\\
+v_{y,0}^C = 0.
+\end{array}\right.\qquad
+\end{displaymath}
+\end{itemize}
+\item Since both considered systems (system 1: the stone and system 2: the cheese) are only subject to gravity, their equations of motions are given by Newton's second law : 
+\[
+\ddot{\vec{r}}^S(t) = \vec{g} \qquad \textrm{et} \qquad \ddot{\vec{r}}^C(t) = \vec{g} \qquad \textrm{avec} \qquad \vec{r}(t)=\left(\begin{array}{c}x(t)\\y(t)\\z(t)\end{array}\right)
+\]
+Projecting both of these equations on the $Oxy$ frame, we get four equations of motion:\\
+\begin{itemize}
+\item Equation for the stone, projected onto the $Ox$ horizontal axis: 
+\[
+\ddot{x}^S(t) = 0.
+\]
+Let's integrate this once:
+\[
+\dot{x}^S(t) = cte.
+\]
+The initial condition  $v_{x,0}^S  \equiv \dot{x}^S(t=t_0) = v_0\cos\alpha$ allows to compute the constant
+\[
+\dot{x}^S(t) = v_0\cos\alpha.
+\]
+To find the position, we integrate a second time: 
+\[
+x^S(t)=(v_0\cos\alpha) t + cte'.
+\]
+The initial condition $x_0^S = 0$ gives us $cte' = 0$, and so
+\[
+x^S(t)=(v_0\cos\alpha) t.
+\]\\
+\item Equation for the stone, projected on $Oy$:
+\[
+\ddot{y}^S(t) = -g.
+\]
+We integrate once and use the initial condition $v_{y,0}^S = v_0\sin\alpha$
+\[
+\dot{y}^S(t) = -gt + v_0\sin\alpha.
+\]
+And we integrate and use the initial condition $y_0^S = 0$ again to find
+\[
+y^S(t)= -\frac{1}{2}gt^2 + (v_0\sin\alpha) t.
+\]
+\item Equations for the cheese projected onto $Ox$ and $Oy$ :
+Using the same method as above, we find
+\begin{displaymath}
+\left\{ \begin{array}{l}
+\ddot{x}^C(t) = 0 \\
+\ddot{y}^C(t) = -g 
+\end{array}\right.\qquad
+\left\{ \begin{array}{l}
+\dot{x}^C(t) = 0 \\
+\dot{y}^C(t) = -gt
+\end{array}\right.\qquad
+\left\{ \begin{array}{l}
+{x}^C(t) = L \\
+{y}^C(t) = -\frac{1}{2}gt^2 +H. \\
+\end{array}\right.
+\end{displaymath}\\
+\end{itemize} 
+
+\item The cheese and the stone do collide if there is a time $t=t_{coll}$ at which they have the same position, that is, if the following conditions are met:
+\[ 
+x^S(t_{coll}) = x^C(t_{coll})\qquad \textrm{ET} \qquad y^S(t_{coll}) = y^C(t_{coll}). 
+\]\\
+The condition $x^S(t_{coll}) = x^C(t_{coll})$ gives
+\begin{equation}
+(v_0\cos\alpha) t_{coll} = L \Rightarrow t_{coll} = \frac{L}{v_0\cos\alpha} = \frac{\sqrt{L^2+H^2}}{v_0}.
+\label{eq_cond1}
+\end{equation}
+While the condition $y^S(t_{coll}) = y^C(t_{coll})$ gives
+\begin{equation}
+-\frac{1}{2}gt_{coll}^2 + (v_0\sin\alpha) t_{coll} = -\frac{1}{2}gt_{coll}^2 +H \Rightarrow t_{coll} = \frac{H}{v_0\sin\alpha} = \frac{\sqrt{L^2+H^2}}{v_0}.
+\label{eq_cond2}
+\end{equation}
+Here, we used $\tan\alpha = \frac{\sin\alpha}{\cos\alpha} = \frac{H}{L}$.
+The solutions (\ref{eq_cond1}) and (\ref{eq_cond2}) are identical: there is, indeed, a cheese-stone collision at time 
+\begin{equation}\label{eq_tcoll} t_{coll}=\frac{\sqrt{L^2+H^2}}{v_0}. 
+\end{equation}
+We find that the expression for $t_{coll}$ does not depend on $g$: $g$ accelerates both objects vertically and in the same fashion (mathematically, that's the term in $-\frac{1}{2}g t^2$), which has no influence on the horizontal motion of the objects, and so none on $t_{coll}$ either. 
+\item[b)] We just proved that the the stone and the cheese will always collide, no matter the initial speed $v_0$. Isn't that surprising? However, if $v_0$ is too small, the cheese will hit the ground before the collision happens: we must restrict $v_0$ in that respect. This is not contradicting the previous statement: the collision would just ``happen'' at $y<0$, that is, ``in the ground''. We would just have to dig a big enough hole to be able to see it.
+
+In order for the collision to happen above ground, we must ensure $y^C(t_{coll})>0$, that is
+\[
+{y}^C(t_{coll}) =  -\frac{1}{2}gt_{coll}^2 +H > 0
+\]
+\[
+\Rightarrow H>\frac{1}{2}gt_{coll}^2 = \frac{1}{2}g\frac{L^2+H^2}{v_0^2}
+\]
+\begin{equation}\label{eq_condv0}
+\Rightarrow v_0 > \sqrt{g\frac{L^2+H^2}{2H}}.
+\end{equation}
+
+\item[c)]
+Let's check that the results we found are in the right dimensions.
+\begin{itemize}
+\item Equation \ref{eq_tcoll}: $t_{coll}=\frac{\sqrt{L^2+H^2}}{v_0}:\frac{\left([m]^2\right)^{1/2}}{[m/s]}=\frac{[\cancel{m}]}{[\cancel{m}/s]}=[s]$. We find units of time.
+\item Equation \ref{eq_condv0}: $v_0 > \sqrt{g\frac{L^2+H^2}{2H}}:\left([m/s^2]\frac{[m]^2}{[m]}\right)^{1/2}=\frac{\cancel{[m]^{1/2}}[m]}{[s]\cancel{[m]^{1/2}}}$. We find units of speed.
+\end{itemize}
+Let's see a few limiting cases to check if we find what we expect.
+\begin{itemize}
+\item If $v_0$ tends towards infinity, $t_{coll}$ must tend to 0 (Eq.\ref{eq_tcoll}) and the collision will happen above ground (Eq.\ref{eq_condv0})
+\item If $v_0$ tends to 0, $t_{coll}$ must tend towards infinity (Eq.\ref{eq_tcoll}) and the collision cannot happen above ground since Eq.\ref{eq_condv0} is never satisfied.
+\item If $g$ tends to 0, the right-hand side of Eq.\ref{eq_condv0} tends to 0, so the collision will happen above ground, whatever the speed $v_0>0$. 
+\item If $H$ tends to 0, the right-hand side of Eq.\ref{eq_condv0} tends towards infinity, so the collision cannot happen above ground. 
+
+\end{itemize}
+
+\end{enumerate}
+
+
+
