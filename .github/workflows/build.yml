@@ -46,8 +46,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        extra_system_packages: texlive-latex-extra
+      #with:
+      #  extra_system_packages: texlive-latex-extra
     - name: Check Metadata
       run: |
         echo $SHELL
@@ -76,15 +76,17 @@ jobs:
         echo "git run id" ${{github.run_id}}
         echo "head sha " ${{ github.event.pull_request.head.sha }}
         echo "GITHUB sha" $GITHUB_SHA
+        commit_sha=${{ github.event.pull_request.head.sha }}
+        if [ -z "${commit_sha}" ]; then commit_sha=${{ github.sha }}; fi;
         file_to_charge=$(printf ",%s" "${missing_metadata_file[@]}")
         if (( ${#missing_metadata_file[@]} > 0 )); then 
-        curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"  --data "{
+        curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${commit_sha} --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"  --data "{
             \"context\": \"Build / check_file_metadata\",
             \"state\": \"failure\",
             \"description\": \"Missing metadata files : $file_to_charge existing metadata files: \",
             \"target_url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
           }"; exit 1; else 
-          curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
+          curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${commit_sha} --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --header 'content-type: application/json' --data '{
             "context": "Build / check_file_metadata",
             "state": "success",
             "description": "All metadata exist",
