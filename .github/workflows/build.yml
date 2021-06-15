@@ -85,7 +85,7 @@ jobs:
               \"state\": \"failure\",
               \"description\": \"Missing metadata files : '$file_to_charge' existing metadata files: \",
               \"target_url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
-            }" '; echo "$curl_request"; $curl_request; exit 1; 
+            }" '; echo "$curl_request"; $curl_request; echo "curl request executed"; exit 1; 
         else 
           curl_request='curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/'${commit_sha}' --header "authorization: Bearer ${{ secrets.ADMIN_TOKEN }}"  --data "{
               \"context\": \"Build / check_file_metadata\",
