@@ -74,6 +74,8 @@ jobs:
         echo "github sha"+ ${{ github.sha }}
         echo "repository " ${{ github.repository }}
         echo "git run id" ${{github.run_id}}
+        echo "head sha " ${{ github.event.pull_request.head.sha }}
+        echo "GITHUB sha" $GITHUB_SHA
         file_to_charge=$(printf ",%s" "${missing_metadata_file[@]}")
         if (( ${#missing_metadata_file[@]} > 0 )); then 
         curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"  --data "{
