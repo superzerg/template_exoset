@@ -84,7 +84,7 @@ jobs:
             --url https://api.github.com/repos/${{ github.repository }}/commits/${commit_sha}/comments \
             --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
             --data '{
-              "body": "Missing metadata files : existing metadata files: ",
+              "body": "Missing metadata files : $file_to_charge "
             }'; echo "curl request executed"; exit 1; 
         else 
           curl_request='curl --request POST --url https://api.github.com/repos/${{ github.repository }}/statuses/'${commit_sha}' --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"  --data "{
